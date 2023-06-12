@@ -1,22 +1,14 @@
-Shader "LearningShader/BlendShaders"
+Shader "LearningShader/UVCreateShape"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
-        _Color("Color", Color)=(1,1,1,1)
-        [Enum(UnityEngine.Rendering.BlendMode)]
-        _SrcFactor("Src Factor", Float)=5
-        [Enum(UnityEngine.Rendering.BlendMode)]
-        _DstFactor("Dst Factor", Float)=10
-        [Enum(UnityEngine.Rendering.BlendMode)]
-        _Opp("Operation",Float)=5
+        _UVTex ("UVTex", 2D) = "white" {}
+        _MinusTexUV("MinusTexUV", 2D)="white" {}
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
-        Blend [_SrcFactor] [_DstFactor]
-        BlendOp [_Opp]
 
         Pass
         {
@@ -37,29 +29,37 @@ Shader "LearningShader/BlendShaders"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                
+                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-            float4 _Color;
+            sampler2D _UVTex;
+            float4 _UVTex_ST;
+            sampler2D _MinusTexUV;
+            float4 _MinusTexUV_ST;
+
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = TRANSFORM_TEX(v.uv, _UVTex);
                 
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
+                fixed4 col1 = tex2D(_MinusTexUV, i.uv);
+                if(col1.a==0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    fixed4 col = tex2D(_UVTex, i.uv);
+                return col;
+                }
                 
-                float2 uvs=i.uv;
-                fixed4 textureColor=tex2D(_MainTex,uvs);
-               
-                return textureColor;
             }
             ENDCG
         }
