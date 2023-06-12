@@ -53,7 +53,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MinusTexUV:
-        m_Texture: {fileID: 2800000, guid: 603f18ff43443fb4abb5fcd1cf8ccde4, type: 3}
+        m_Texture: {fileID: 2800000, guid: 34314d481aeef354eae71249ca465f7d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -90,4 +90,5 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FlowSpeed: {r: 0, g: 1, b: 0, a: 0}
+    - _FlowSpeed_Tile: {r: 0.1, g: 0.1, b: 10, a: 10}
   m_BuildTextureStacks: []

@@ -6,7 +6,7 @@ Shader "LearningShader/Flow"
         _FlowTex ("FlowTex", 2D) = "white" {}
         _UVTex ("UVTex", 2D) = "white" {}
         _MinusTexUV("MinusTexUV", 2D)="white" {}
-        _FlowSpeed("FLow Speed",vector)=(0,0,0,0)
+        _FlowSpeed_Tile("FLow Speed/ Tile",vector)=(0,0,0,0)
     }
     SubShader
     {
@@ -42,7 +42,7 @@ Shader "LearningShader/Flow"
             sampler2D _UVTex;
             sampler2D _MinusTexUV;
             float4 _MinusTexUV_ST;
-            float4 _FlowSpeed;
+            float4 _FlowSpeed_Tile;
 
             v2f vert (appdata v)
             {
@@ -67,9 +67,10 @@ Shader "LearningShader/Flow"
                 {
                     uv = tex2D(_UVTex, i.uv.xy);
                 }
-                uv.rg+= frac(_Time.y*_FlowSpeed.xy);
+                uv.rg*=_FlowSpeed_Tile.zw;
+                uv.rg+= frac(_Time.y*_FlowSpeed_Tile.xy);
                 fixed4 flow = tex2D(_FlowTex, uv.rg)*uv.a;
-                fixed4 main = tex2D(_MainTex, i.uv.xy)*(1-uv.a);
+                fixed4 main = tex2D(_MainTex, i.uv.xy)*(1-uv.a*flow.a);
  
                 return flow+main;
             }
