@@ -35,7 +35,7 @@ public class ResizeQuadEffectController : MonoBehaviour
     Vector3 screenInitPosInWorld;
     Vector3 screenFinalPosInWorld;
 
-    [SerializeField]int sampleSize = 0;
+    [SerializeField] int sampleSize = 0;
 
     public static void setMinMaxParticlePosition(Vector2 _pos, float radius)
     {
@@ -44,7 +44,7 @@ public class ResizeQuadEffectController : MonoBehaviour
             RebuildTextures();
 
 
-       
+
 
         if (_pos.x < instance.minX) instance.minX = _pos.x;
         if (_pos.y < instance.minY) instance.minY = _pos.y;
@@ -63,9 +63,9 @@ public class ResizeQuadEffectController : MonoBehaviour
             instance.radius = radius;
 
 
-            
+
         }
- 
+
     }
 
     int getSampleSize(int sampleID)
@@ -75,20 +75,21 @@ public class ResizeQuadEffectController : MonoBehaviour
 
         for (int i = 0; i < sampleID; i++)
         {
-            r *= 2; 
+            r *= 2;
         }
 
         return r;
     }
-    
-    void LoadSampleSize() {
+
+    void LoadSampleSize()
+    {
 #if UNITY_EDITOR
         int sampleID = UnityEditor.EditorPrefs.GetInt("SampleID") >= 0 ? UnityEditor.EditorPrefs.GetInt("SampleID") : 2;
-        sampleSize = getSampleSize(sampleID);        
+        sampleSize = getSampleSize(sampleID);
 #endif
     }
 
-    
+
 
     public static void RebuildTextures(int flipTex = -1)
     {
@@ -109,10 +110,10 @@ public class ResizeQuadEffectController : MonoBehaviour
                     DestroyImmediate(aux[i].gameObject);
                 }
             }
-                
-            if(aux.Length > 0)
+
+            if (aux.Length > 0)
                 instance = aux[0].GetComponent<ResizeQuadEffectController>();
-           
+
         }
 
         if (flipTex == 0)
@@ -166,7 +167,7 @@ public class ResizeQuadEffectController : MonoBehaviour
     {
         if (effectCamera.GetComponent<Camera>().targetTexture == null)
         {
-            RebuildRenderTexturesAll();
+            // RebuildRenderTexturesAll();
         }
 
         resetMinMax();
@@ -174,13 +175,14 @@ public class ResizeQuadEffectController : MonoBehaviour
 
     }
 
-    private void resetMinMax() {
+    private void resetMinMax()
+    {
 
-      
-        minY= minX = Mathf.Infinity;
+
+        minY = minX = Mathf.Infinity;
         maxY = maxX = -Mathf.Infinity;
-        
-        
+
+
     }
 
     private Vector3[] _meshVertices;
@@ -189,25 +191,26 @@ public class ResizeQuadEffectController : MonoBehaviour
     Vector3 p1, p2, p3, p4;
     private void RebuildMesh()
     {
-        if (mesh == null) {
+        if (mesh == null)
+        {
             mesh = new Mesh();
         }
 
         mesh.Clear();
 
-            
+
 
 
         //if (_meshVertices == null)
-         //   _meshVertices = mesh.vertices;
+        //   _meshVertices = mesh.vertices;
 
         var vertices = new Vector3[4];
 
-        
+
         p1 = transform.InverseTransformPoint(new Vector3(cullingRect.x, cullingRect.y));
         p2 = transform.InverseTransformPoint(new Vector3(cullingRect.x, cullingRect.height));
         p3 = transform.InverseTransformPoint(new Vector3(cullingRect.width, cullingRect.height));
-        p4 = transform.InverseTransformPoint(new Vector3(cullingRect.width, cullingRect.y ));
+        p4 = transform.InverseTransformPoint(new Vector3(cullingRect.width, cullingRect.y));
 
         p1.x -= radius;
         p1.y -= radius;
@@ -237,17 +240,17 @@ public class ResizeQuadEffectController : MonoBehaviour
         //print(size);
 
 
-        
+
         if (p1.x < pos.x) p1.x = pos.x;
         if (p1.x > size.x) p1.x = size.x;
         if (p1.y < pos.y) p1.y = pos.y;
 
         if (p2.x < pos.x) p2.x = pos.x;
         if (p2.x > size.x) p2.x = size.x;
-        if (p2.y > size.y ) p2.y = size.y;
-        
+        if (p2.y > size.y) p2.y = size.y;
+
         if (p3.x > size.x) p3.x = size.x;
-        if (p3.y > size.y) p3.y =  size.y;
+        if (p3.y > size.y) p3.y = size.y;
 
         if (p4.x > size.x) p4.x = size.x;
         if (p4.y < pos.y) p4.y = pos.y;
@@ -255,7 +258,7 @@ public class ResizeQuadEffectController : MonoBehaviour
 
 
 
-       
+
 
 
         Vector3 vertex = vertices[0];
@@ -279,10 +282,10 @@ public class ResizeQuadEffectController : MonoBehaviour
         vertices[3] = vertex;
 
         mesh.vertices = vertices;
-        mesh.triangles = new int[]{ 0, 1, 2, 2, 3, 0 };
+        mesh.triangles = new int[] { 0, 1, 2, 2, 3, 0 };
         mesh.RecalculateBounds();
 
-        if(mf == null) mf = GetComponent<MeshFilter>();
+        if (mf == null) mf = GetComponent<MeshFilter>();
         mf.mesh = mesh;
 
         transform.position = new Vector3(0, 0, 10f);
@@ -300,7 +303,8 @@ public class ResizeQuadEffectController : MonoBehaviour
         LoadSampleSize(); // read from unity prefs
 #endif
 
-        if (sampleSize <= 0) {
+        if (sampleSize <= 0)
+        {
             Debug.LogError("Sample tex is size 0");
             return;
         }
@@ -311,19 +315,19 @@ public class ResizeQuadEffectController : MonoBehaviour
         float size = sampleSize;
         float ratio;
         int width, height;
-        
+
         ratio = (float)Camera.main.pixelHeight / (float)Camera.main.pixelWidth;
 
         width = (int)(size);
         height = (int)(size * ratio);
 
-        
+
 
         effectCamera = gameObject.transform.parent.gameObject;
 
         if (gameObject.transform.parent.parent.Find("0-BGCamera"))
             backgroundCamera = gameObject.transform.parent.parent.Find("0-BGCamera").gameObject;
-        
+
         // Only for toon style
         if (backgroundCamera != null)
         {
@@ -336,7 +340,7 @@ public class ResizeQuadEffectController : MonoBehaviour
 
         //CREATING AND ADDING RT
         RenderTexture EffectRT = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Default);
-       
+
         //For Regular shader
         GetComponent<MeshRenderer>().sharedMaterial.SetTexture("_MainTex", EffectRT);
 
