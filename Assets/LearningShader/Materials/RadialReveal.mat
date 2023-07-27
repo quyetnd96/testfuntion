@@ -77,9 +77,9 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Reveal: 0
-    - _Rotation: 3.81
-    - _Smoothness: 0
+    - _Reveal: 0.5
+    - _Rotation: 0
+    - _Smoothness: 0.035
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
