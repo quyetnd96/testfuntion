@@ -69,13 +69,13 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Rotation: 0
+    - _Rotation: 1.75
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _Variable: -0.5
-    - _Variable1: 0.5
+    - _Variable: -0.15
+    - _Variable1: 0.3
     - _ZWrite: 1
     - _mulVariable: 1
     m_Colors:
