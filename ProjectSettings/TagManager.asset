@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Metaball_liquid
+  - Red
+  - Obstacle
   layers:
   - Default
   - TransparentFX
