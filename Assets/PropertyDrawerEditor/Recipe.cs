@@ -11,11 +11,17 @@ public class Ingredient
     public int amount = 1;
     public IngredientUnit unit;
     public bool isGetSetLevel;
-    [SerializeField] string test;
+    public test test;
 }
 
 public class Recipe : MonoBehaviour
 {
     public Ingredient potionResult;
     public Ingredient[] potionIngredients;
+}
+[Serializable]
+public class test
+{
+    public bool Setbool;
+    public string testString;
 }

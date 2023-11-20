@@ -33,7 +33,7 @@ public class LineDrawController : MonoBehaviour
         if (_isFixed) return;
         Vector3 realPoint = new Vector3(newPoint.x, newPoint.y, 5.5f);
         _cachePointUpdate = realPoint;
-        if (CanNotDrawPoint(realPoint)) return;
+        // if (CanNotDrawPoint(realPoint)) return;
         var storage = listPos.Count - 1;
         if (Vector2.Distance(listPos[storage], realPoint) > 0.2f)
         {
