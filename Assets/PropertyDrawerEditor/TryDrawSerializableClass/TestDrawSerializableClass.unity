@@ -254,10 +254,8 @@ MonoBehaviour:
   testSeriSe:
     a: 100
     b: 
-    isGetSetLevel: 1
+    isGetSetLevel: 0
     testList:
-    - {fileID: 0}
-    - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
