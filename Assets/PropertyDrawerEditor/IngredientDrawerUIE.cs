@@ -37,3 +37,26 @@ public class IngredientDrawer : PropertyDrawer
         EditorGUI.EndProperty();
     }
 }
+// [CustomEditor(typeof(ControllerDrawGame))]
+// public class DrawSeri : Editor
+// {
+//     //ControllerDrawGame ControllerDrawGame;
+//     SerializedProperty testClass;
+//     SerializedProperty testField;
+//     SerializedProperty insideFlagProperty;
+//     private void OnEnable()
+//     {
+//         testClass = serializedObject.FindProperty("TestSeri").FindPropertyRelative("field1");
+
+//         insideFlagProperty = serializedObject.FindProperty("TestSeri").FindPropertyRelative("field1").FindPropertyRelative("isGetSetLevel");
+//     }
+//     public override void OnInspectorGUI()
+//     {
+//         serializedObject.Update();
+//         EditorGUILayout.BeginHorizontal();
+//         EditorGUILayout.PropertyField(testClass);
+//         EditorGUILayout.PropertyField(insideFlagProperty);
+//         EditorGUILayout.EndHorizontal();
+//         serializedObject.ApplyModifiedProperties();
+//     }
+// }
