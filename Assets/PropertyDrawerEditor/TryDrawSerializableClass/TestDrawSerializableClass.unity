@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testSeriSe:
-    a: 100
+    a: 129
     b: 
     isGetSetLevel: 0
     testList:

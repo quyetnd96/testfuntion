@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,6 +29,7 @@ public class RangeDrawer : PropertyDrawer
 [CustomPropertyDrawer(typeof(TestAttribute))]
 public class TestDrawer : PropertyDrawer
 {
+    TestSeriSe TestSeriSe;
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         // use the default property height, which takes into account the expanded state
@@ -37,9 +39,9 @@ public class TestDrawer : PropertyDrawer
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         var boolRect = new Rect(position.x, position.y, 50, 20);
-        var listRectPos = new Rect(position.x + 60, position.y, 300, 0);
+        var propertyRect = new Rect(position.x + 50, position.y, position.width, position.height);
         EditorGUI.PropertyField(boolRect, property.FindPropertyRelative("isGetSetLevel"), GUIContent.none);
-        EditorGUI.PropertyField(listRectPos, property.FindPropertyRelative("testList"), label);
+        EditorGUI.PropertyField(propertyRect, property, label, true);
     }
     // public object GetParent(SerializedProperty prop)
     // {
