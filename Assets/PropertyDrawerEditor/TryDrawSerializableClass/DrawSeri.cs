@@ -41,10 +41,6 @@ public class TestDrawer : PropertyDrawer
         EditorGUI.PropertyField(boolRect, property.FindPropertyRelative("isGetSetLevel"), GUIContent.none);
         EditorGUI.PropertyField(listRectPos, property.FindPropertyRelative("testList"), label);
     }
-
-
-
-
     // public object GetParent(SerializedProperty prop)
     // {
     //     var path = prop.propertyPath.Replace(".Array.data[", "[");
