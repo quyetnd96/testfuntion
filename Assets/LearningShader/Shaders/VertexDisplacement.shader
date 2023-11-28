@@ -35,7 +35,6 @@ Shader "LearningShader/VertexDisplacement"
                 o.uv=v.uv;
                 float xMod=tex2Dlod(_MainTex,float4(o.uv.xy,0,1));
                 xMod=xMod*2-1;
-           ;
                 o.uv.x=sin(xMod*10 - _Time.y);
                 float3 vert=v.vertex;
                 vert.y=o.uv.x*10;
