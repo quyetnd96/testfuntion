@@ -3,13 +3,17 @@ Shader "LearningShader/GradientNoise"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Speed("Speed", Float)=0.5
         _GradientX("GradientX", Float)=0.5
         _GradientY("GradientY", Float)=0.5
+        _wave_direction("wave direction", Vector) = (0, 0, 0, 0)
+        _ExpendXFromRoof("_ExpendXByY", Range(1, 10))=1.5
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -52,29 +56,49 @@ Shader "LearningShader/GradientNoise"
 
             void Unity_GradientNoise_float(float2 UV, float Scale, out float Out)
             {
-                Out = unity_gradientNoise(UV * Scale) + 0.5;
+                Out = unity_gradientNoise(UV * Scale);
             }
             sampler2D _MainTex;
+            float4 _MainTex_ST;
             float _GradientX;
             float _GradientY;
+            float _Speed;
+            float2 _wave_direction;
+            float ScaleX;
+            float ScaleY;
+            float _ExpendXFromRoof;
+            
             v2f vert (appdata v)
             {
-                
                 v2f i;
                 i.uv=v.uv;
-                float3 vert=v.vertex;
-                vert.x=i.uv.x;
-                vert.y=i.uv.y;
+                float2 variable=i.uv;
+                variable.x+=_Speed*_wave_direction.x*_Time.y;
+                variable.y+=_Speed*_wave_direction.y*_Time.y;
+                Unity_GradientNoise_float(variable.xy,_GradientX,variable.x);
+                Unity_GradientNoise_float(variable.xy,_GradientY,variable.y);
+                float magniture=sqrt(pow(variable.x,2)+pow(variable.y,2));
+                variable.x*=magniture;
+                variable.y*=magniture;
+                i.uv.x= (i.uv.x-0.5)*_ExpendXFromRoof+0.5;
+                i.uv.x     +=i.uv.x*(variable.x)*pow(i.uv.y,2);
+                i.uv.y     +=i.uv.y*(variable.y)/2;
+                v.vertex.x=(v.vertex.x)*_ExpendXFromRoof;
                 i.vertex = UnityObjectToClipPos(v.vertex);
                 return i;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                Unity_GradientNoise_float(i.uv.xy,_GradientX,i.uv.x);
-                Unity_GradientNoise_float(i.uv.xy,_GradientY,i.uv.y);
-                fixed4 col_uv1=tex2D(_MainTex, i.uv.xy);
-                return col_uv1;
+                fixed4 main=tex2D(_MainTex, i.uv.xy);
+                if(main.a<=0)
+                {
+                    return fixed4(main.rgb,0);
+                }
+                else
+                {
+                    return fixed4(main.rgb,1);
+                }
             }
             ENDCG
         }
