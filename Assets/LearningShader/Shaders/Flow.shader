@@ -12,6 +12,7 @@ Shader "LearningShader/Flow"
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -62,17 +63,18 @@ Shader "LearningShader/Flow"
                 if(col_uv1.a==0)
                 {
                     uv=0;
+                    fixed4 main = tex2D(_MainTex, i.uv.xy);
+                    return fixed4(main.rgb,0);
                 }
                 else
                 {
                     uv = tex2D(_UVTex, i.uv.xy);
-                }
-                uv.rg*=_FlowSpeed_Tile.zw;
-                uv.rg+= frac(_Time.y*_FlowSpeed_Tile.xy);
-                fixed4 flow = tex2D(_FlowTex, uv.rg)*uv.a;
-                fixed4 main = tex2D(_MainTex, i.uv.xy)*(1-uv.a*flow.a);
- 
-                return flow+main;
+                    uv.rg*=_FlowSpeed_Tile.zw;
+                    uv.rg+= frac(_Time.y*_FlowSpeed_Tile.xy);
+                    fixed4 flow = tex2D(_FlowTex, uv.rg)*uv.a;
+                    fixed4 main = tex2D(_MainTex, i.uv.xy)*(1-uv.a*flow.a);
+                    return flow+main;
+                } 
             }
             ENDCG
         }
