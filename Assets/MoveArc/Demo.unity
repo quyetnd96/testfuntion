@@ -398,14 +398,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectSpawnPos: {fileID: 2657138986837943464, guid: ec43b591e97f6b0448ffbbebf8019084, type: 3}
   targetMove: {fileID: 1350577234}
-  SpeedMoveXStart: 0.5
-  SpeedMoveXFinal: 0
-  accelerationX: 0.1
+  speedMoveXStart: 20
+  speedMoveXFinal: 0.1
+  accelerationX: 0.5
   isMoving: 1
   isMovingX: 1
   isMovingY: 1
   timeCount: 0
-  SpeedMoveY: 0
-  DistanceMoveY: 0
+  SpeedMoveYStart: 2
   cachePreviousDistanceX: 0
   cachePreviousDistanceY: 0
