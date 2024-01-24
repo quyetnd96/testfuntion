@@ -45,8 +45,9 @@ Shader "LearningShader/VertexDisplacement"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                
-                return fixed4(i.uv.x,0.2,0.2,1);
+                fixed4 main=tex2D(_MainTex,i.uv.xy);
+                // return fixed4(i.uv.x,0.2,0.2,1);
+                return main;
             }
             ENDCG
         }

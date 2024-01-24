@@ -1,13 +1,12 @@
-Shader "LearningShader/GradientNoise"
+Shader "LearningShader/TreeMovingVertex"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Speed("Speed", Float)=0.5
         _WaveScale("_WaveScale", Vector) = (0, 0, 0, 0)
-        _wave_direction("Wave Direction", Vector) = (0, 0, 0, 0)
-        _ExpendXFromRoof("_ExpendXBound", Range(1, 10))=1.5
-        _ExpendYFromRoof("_ExpendYBound", Range(1, 10))=1.5
+        _wave_direction("wave direction", Vector) = (0, 0, 0, 0)
+        _RangeYBeAffect("RangeYBeAffect", Range(0, 1))=0.2
     }
     SubShader
     {
@@ -63,28 +62,25 @@ Shader "LearningShader/GradientNoise"
             float2 _WaveScale;
             float _Speed;
             float2 _wave_direction;
-            float ScaleX;
-            float ScaleY;
-            float _ExpendXFromRoof;
-            float _ExpendYFromRoof;
+            float _RangeYBeAffect;
+            
             v2f vert (appdata v)
             {
                 v2f i;
                 i.uv=v.uv;
                 float2 variable=i.uv;
-                variable.x+=_Speed*_wave_direction.x*_Time.y;
-                variable.y+=_Speed*_wave_direction.y*_Time.y;
+                variable.x+=_Speed*_wave_direction.x*_Time.yy;
+                variable.y+=_Speed*_wave_direction.y*_Time.yy;
                 Unity_GradientNoise_float(variable.xy,_WaveScale.x,variable.x);
                 Unity_GradientNoise_float(variable.xy,_WaveScale.y,variable.y);
-                float magniture=sqrt(pow(variable.x,2)+pow(variable.y,2));
+                float magniture=sqrt(pow(variable.x,2)+pow(variable.y,5));
                 variable.x*=magniture;
                 variable.y*=magniture;
-                i.uv.x= (i.uv.x-0.5)*_ExpendXFromRoof+0.5;
-                // i.uv.y= (i.uv.y-0.5)*_ExpendYFromRoof+0.5;
-                i.uv.x     +=i.uv.x*(variable.x)*pow(i.uv.y,2);
-                // i.uv.y     +=i.uv.y*(variable.y);
-                v.vertex.x=(v.vertex.x)*_ExpendXFromRoof;
-                // v.vertex.y=(v.vertex.y)*_ExpendYFromRoof;
+                if(i.uv.y>_RangeYBeAffect)
+                {
+                v.vertex.x+=v.vertex.x*(variable.x);
+                v.vertex.y+= v.vertex.y*(variable.y);
+                }
                 i.vertex = UnityObjectToClipPos(v.vertex);
                 return i;
             }
@@ -92,14 +88,7 @@ Shader "LearningShader/GradientNoise"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 main=tex2D(_MainTex, i.uv.xy);
-                if(main.a<=0)
-                {
-                    return fixed4(0,0,0,0);
-                }
-                else
-                {
-                    return fixed4(main.rgb,1);
-                }
+                return main;
             }
             ENDCG
         }
